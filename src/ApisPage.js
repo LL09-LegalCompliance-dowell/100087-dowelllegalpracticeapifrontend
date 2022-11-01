@@ -3,6 +3,8 @@ import jwt_decode from "jwt-decode";
 import {GrCheckboxSelected, GrCheckbox} from "react-icons/gr"
 import axios from 'axios'
 
+const homeUrl = "https://ll09-LegalCompliance-dowell.github.io/100087-dowelllegalpracticeapifrontend"
+
 
 const ApisPage = () =>  {
   const [checked, setChecked] = useState(false);
@@ -215,7 +217,7 @@ const ApisPage = () =>  {
             {
                 checked? <GrCheckboxSelected /> :<GrCheckbox />
             }                     
-            <a style={{margin:10}} href='https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=https://george-kibe.github.io/legalapitest/'>
+            <a style={{margin:10}} href={`https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=${homeUrl}`}>
                 I agree with to the privacy policy and terms and conditions
             </a>
         </div>
