@@ -3,15 +3,18 @@ import jwt_decode from "jwt-decode";
 import {GrCheckboxSelected, GrCheckbox} from "react-icons/gr"
 import axios from 'axios'
 
-const homeUrl = "https://ll09-LegalCompliance-dowell.github.io/100087-dowelllegalpracticeapifrontend"
-
-
 const ApisPage = () =>  {
   const [checked, setChecked] = useState(false);
   const currentURL = window.location.href
   const strings = currentURL.split("?token=")
   const token = strings[1] 
   const [appWebData, setAppWebData] = useState([])
+
+  //legal API
+  const liveUrl = "https://ll09-LegalCompliance-dowell.github.io/100087-dowelllegalpracticeapifrontend"
+  const localUrl = "http://localhost:3000/100087-dowelllegalpracticeapifrontend"
+  const session_id = "ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0"
+
 
   //form input stattes
   const [platform, setPlatform] = useState("");
@@ -66,23 +69,28 @@ const ApisPage = () =>  {
   const getPolicies = async () => {
     try{
         const response = await axios.get("https://100087.pythonanywhere.com/api/legalpolicies/")
-        //console.log(response)
+        console.log(response)
         setAppWebData(response.data.data)
         
     }catch(error){
         console.log(error)
     }
   }
-
-  useEffect(() => {
-    if(!token){
-        getPolicies()
-        return
+  const getStatus = async () => {
+    try{
+        const response = await axios.get(`https://100087.pythonanywhere.com/api/legalpolicies/${session_id}/iagreestatus/`)
+        console.log(response.data)
+        //setChecked()
+    } catch(error){
+        console.log(error)
     }
-    const decoded = jwt_decode(token);
-    console.log(decoded.isSuccess)
-    setChecked(decoded.isSuccess)
-  }, [token])
+  }
+
+  useEffect(() => {    
+    getPolicies()
+    getStatus()
+   
+  }, [])
 
   console.log(appWebData)
   
@@ -217,8 +225,8 @@ const ApisPage = () =>  {
             {
                 checked? <GrCheckboxSelected /> :<GrCheckbox />
             }                     
-            <a style={{margin:10}} href={`https://100087.pythonanywhere.com/policy/FB1010000000001665306290565391/website-privacy-policy/?redirect_url=${homeUrl}`}>
-                I agree with to the privacy policy and terms and conditions
+            <a style={{margin:10}} href={`https://100087.pythonanywhere.com/legalpolicies/FB1010000000001665306290565391/website-privacy-policy/policies/?redirect_url=${localUrl}&session_id=${session_id}`}>
+                Agree to privacy and terms and conditions
             </a>
         </div>
         <button style={{margin:10}} type="submit">Website content continued</button>
