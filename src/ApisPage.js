@@ -1,19 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import jwt_decode from "jwt-decode";
 import {GrCheckboxSelected, GrCheckbox} from "react-icons/gr"
 import axios from 'axios'
 
 const ApisPage = () =>  {
   const [checked, setChecked] = useState(false);
-  const currentURL = window.location.href
-  const strings = currentURL.split("?token=")
-  const token = strings[1] 
   const [appWebData, setAppWebData] = useState([])
 
   //legal API
   const liveUrl = "https://ll09-LegalCompliance-dowell.github.io/100087-dowelllegalpracticeapifrontend"
   const localUrl = "http://localhost:3000/100087-dowelllegalpracticeapifrontend"
-  const session_id = "ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0"
+  const session_id = "ayaquq6jdyqvaq9h6dlm9ysu3wkykyx0hfhwdcbnjbc"
 
 
   //form input stattes
@@ -69,7 +65,7 @@ const ApisPage = () =>  {
   const getPolicies = async () => {
     try{
         const response = await axios.get("https://100087.pythonanywhere.com/api/legalpolicies/")
-        console.log(response)
+        //console.log(response)
         setAppWebData(response.data.data)
         
     }catch(error){
@@ -80,9 +76,13 @@ const ApisPage = () =>  {
     try{
         const response = await axios.get(`https://100087.pythonanywhere.com/api/legalpolicies/${session_id}/iagreestatus/`)
         console.log(response.data)
+        const agree_status = response.data.data[0].i_agree
+        const agreed_date = response.data.data[0].i_agreed_datetime
+        agree_status && setChecked(agree_status)
+        console.log(agree_status, agreed_date)
         //setChecked()
     } catch(error){
-        console.log(error)
+        console.log("Status Error", error)
     }
   }
 
@@ -91,8 +91,6 @@ const ApisPage = () =>  {
     getStatus()
    
   }, [])
-
-  console.log(appWebData)
   
   return (
     <div style={{padding:30, alignItems:"center"}}>
@@ -110,7 +108,7 @@ const ApisPage = () =>  {
                             return <tr key={item.eventId}>
                                         <td>{item.policies_api.app_or_website_or_service_name}</td>
                                         <td>{item.eventId}</td>
-                                        <td>{item.policies_api.description}</td>
+                                        <td style={{padding:5}}>{item.policies_api.description}</td>
                                         <td>{item.policies_api.platform_type}</td>
 
                                    </tr>
@@ -125,7 +123,7 @@ const ApisPage = () =>  {
             </table>
         </div>
 
-        <h1 style={{display:"flex", alignItems:"center", justifyContent:"center"}}>Register {platform ? platform : "APP/Website"}</h1>
+        <h1 style={{display:"flex", alignItems:"center", justifyContent:"center"}}>Register {platform ? platform : "APP/Website"} Details</h1>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
             <form onSubmit={handleSubmit} >
                 <div>
@@ -225,7 +223,7 @@ const ApisPage = () =>  {
             {
                 checked? <GrCheckboxSelected /> :<GrCheckbox />
             }                     
-            <a style={{margin:10}} href={`https://100087.pythonanywhere.com/legalpolicies/FB1010000000001665306290565391/website-privacy-policy/policies/?redirect_url=${localUrl}&session_id=${session_id}`}>
+            <a style={{margin:10}} href={`https://100087.pythonanywhere.com/legalpolicies/FB1010000000001665306290565391/website-privacy-policy/policies/?redirect_url=${liveUrl}&session_id=${session_id}`}>
                 Agree to privacy and terms and conditions
             </a>
         </div>
