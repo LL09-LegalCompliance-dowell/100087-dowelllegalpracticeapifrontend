@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/100087-dowelllegalpracticeapifrontend/static/js/main.a851df8c.js",
+    "main.js": "/100087-dowelllegalpracticeapifrontend/static/js/main.114ca2aa.js",
     "index.html": "/100087-dowelllegalpracticeapifrontend/index.html",
-    "main.a851df8c.js.map": "/100087-dowelllegalpracticeapifrontend/static/js/main.a851df8c.js.map"
+    "main.114ca2aa.js.map": "/100087-dowelllegalpracticeapifrontend/static/js/main.114ca2aa.js.map"
   },
   "entrypoints": [
-    "static/js/main.a851df8c.js"
+    "static/js/main.114ca2aa.js"
   ]
 }
